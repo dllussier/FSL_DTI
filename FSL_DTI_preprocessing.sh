@@ -20,9 +20,9 @@ do
 
 #registers DTI to the T1 MPRAGE
  mkdir $i/DTI/FSL/DTI.bedpost/xfms 
- fsl5.0-flirt -in $i/DTI/FSL/DTI.bedpost/nodif_brain -ref $i/T1/T1.nii -omat $i/DTI/FSL/DTI.bedpost/xfms/diff2str.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 12 -cost mutualinfo
+ fsl5.0-flirt -in $i/DTI/FSL/DTI.bedpost/nodif_brain -ref $i/T1/T1_brain.nii -omat $i/DTI/FSL/DTI.bedpost/xfms/diff2str.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 12 -cost mutualinfo
  fsl5.0-convert_xfm -omat $i/DTI/FSL/DTI.bedpost/xfms/str2diff.mat -inverse $i/DTI/FSL/DTI.bedpost/xfms/diff2str.mat
- fsl5.0-flirt -in $i/T1/T1.nii -ref /afs/dbic.dartmouth.edu/usr/pkg/fsl/etc/standard/avg152T1_brain -omat $i/DTI/FSL/DTI.bedpost/xfms/str2standard.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 12 -cost corratio
+ fsl5.0-flirt -in $i/T1/T1_brain.nii -ref $FSLDIR/etc/standard/avg152T1_brain -omat $i/DTI/FSL/DTI.bedpost/xfms/str2standard.mat -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 12 -cost corratio
  fsl5.0-convert_xfm -omat $i/DTI/FSL/DTI.bedpost/xfms/standard2str.mat -inverse $i/DTI/FSL/DTI.bedpost/xfms/str2standard.mat
  fsl5.0-convert_xfm -omat $i/DTI/FSL/DTI.bedpost/xfms/diff2standard.mat -concat $i/DTI/FSL/DTI.bedpost/xfms/str2standard.mat $i/DTI/FSL/DTI.bedpost/xfms/diff2str.mat
  fsl5.0-convert_xfm -omat $i/DTI/FSL/DTI.bedpost/xfms/standard2diff.mat -inverse $i/DTI/FSL/DTI.bedpost/xfms/diff2standard.mat
