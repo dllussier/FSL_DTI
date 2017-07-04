@@ -2,9 +2,8 @@
 
 #use this when running on local workstation
 
-#include next two lines if running multiple subjects, for single subject leave as is
-#for i in [subjects separated by one space]
-#do
+for i in [subjects separated by one space]
+do
 
 #runs eddy current correction on dti image
  fsl5.0-eddy_correct $i/DTI/nifti/64dir.nii.gz $i/DTI/FSL/64dir_ecc.nii.gz 0
@@ -28,5 +27,4 @@
  fsl5.0-convert_xfm -omat $i/DTI/FSL/DTI.bedpost/xfms/diff2standard.mat -concat $i/DTI/FSL/DTI.bedpost/xfms/str2standard.mat $i/DTI/FSL/DTI.bedpost/xfms/diff2str.mat
  fsl5.0-convert_xfm -omat $i/DTI/FSL/DTI.bedpost/xfms/standard2diff.mat -inverse $i/DTI/FSL/DTI.bedpost/xfms/diff2standard.mat
 
-#include last line if running multiple subjects, for single subject leave as is
-#done
+done
