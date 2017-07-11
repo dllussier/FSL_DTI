@@ -1,9 +1,28 @@
 #!/bin/bash
 
 #use this when running on local workstation
+#for scripts to run raw DTI dicoms must be placed in subject folder under DTI directory
 
 for i in [subjects separated by one space]
 do
+
+#creates additional directories needed for DTI preprocessing scripts
+ mkdir $i/DTI/raw/
+ mkdir $i/DTI/nifti/
+ mkdir $i/DTI/FSL/
+ mv $i/DTI/DTI_dicoms/ $i/DTI/raw/DTI_dicoms/
+
+#converts dti dicoms to niftis
+ dcm2nii $i/DTI/raw/DTI_dicoms/
+
+#moves and renames files to set up folder to run DTI preporcessing scripts
+	mv $i/DTI/raw/DTI_dicoms/x*WIP6dir*.nii.gz $i/DTI/nifti/x6dir.nii.gz
+	mv $i/DTI/raw/DTI_dicoms/*WIP6dir*.nii.gz $i/DTI/nifti/6dir.nii.gz
+	mv $i/DTI/raw/DTI_dicoms/*WIP64dir*.nii.gz $i/DTI/nifti/64dir.nii.gz
+	mv $i/DTI/raw/DTI_dicoms/*WIP6dir*.bval $i/DTI/nifti/6dir.bval
+	mv $i/DTI/raw/DTI_dicoms/*WIP6dir*.bvec $i/DTI/nifti/6dir.bvec
+	mv $i/DTI/raw/DTI_dicoms/*WIP64dir*.bval $i/DTI/nifti/64dir.bval
+	mv $i/DTI/raw/DTI_dicoms/*WIP64dir*.bvec $i/DTI/nifti/64dir.bvec
 
 #runs eddy current correction on dti image
  fsl5.0-eddy_correct $i/DTI/nifti/64dir.nii.gz $i/DTI/FSL/64dir_ecc.nii.gz 0
@@ -16,7 +35,7 @@ do
  fsl5.0-dtifit -k $i/DTI/FSL/64dir_ecc.nii.gz -o $i/DTI/FSL/dti -m $i/DTI/FSL/64dir_ecc_brain_mask.nii.gz -r $i/DTI/nifti/64dir.bvec -b $i/DTI/nifti/64dir.bval
 
 #runs bedpostx to build sampling distributions at each voxelto be used later for tractography
- fsl5.0-bedpost $i/DTI/FSL/
+ fsl5.0-bedpostx $i/DTI/FSL/
 
 #registers DTI to the T1 MPRAGE
  mkdir $i/DTI/FSL/DTI.bedpost/xfms 
