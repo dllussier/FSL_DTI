@@ -21,7 +21,7 @@ do
  cp -r $filepath/$i/$dtidicomfolder $i/DTI/raw/DTI_dicoms
 
 #reorients the T1-weighted MPRAGE and performs a rough extraction
- fsl5.0-fslreorient2std $i/T1/T1.nii.gz $i/FSL/T1/T1_reorient.nii.gz
+ fsl5.0-fslreorient2std $i/T1/T1.nii $i/FSL/T1/T1_reorient.nii.gz
  fsl5.0-bet $i/FSL/T1/T1_reorient.nii.gz $i/FSL/T1/T1_brain.nii.gz -f .1 -B -R
 
 #converts dti dicoms to niftis
